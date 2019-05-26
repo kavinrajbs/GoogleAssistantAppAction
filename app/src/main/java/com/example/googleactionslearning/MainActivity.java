@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity  implements  TextToSpeech.On
     private static final String TAG = "MainActivity";
     private static final String ACTION_VOICE_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION";
     private TextToSpeech textToSpeech;
+    private String query;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity  implements  TextToSpeech.On
     private void handleVoiceSearch(Intent intent) {
         Log.d(TAG, "handleVoiceSearch: ");
         if (intent != null && ACTION_VOICE_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
             textToSpeech = new TextToSpeech(this,this);
             //Toast.makeText(this,"Inside handle voice",Toast.LENGTH_SHORT).show();
         }
@@ -51,7 +52,13 @@ public class MainActivity extends AppCompatActivity  implements  TextToSpeech.On
 
 
     private void speakOut() {
-        textToSpeech.speak("Hey kavin , It's 90 percent charge now",TextToSpeech.QUEUE_FLUSH,null);
+        if(query.contains("battery")) {
+            textToSpeech.speak("Hey kavin , It's 90 percent charge now", TextToSpeech.QUEUE_FLUSH, null);
+        }
+        else if(query.contains("climate"))
+        {
+            textToSpeech.speak("Hey kavin , temperature is 20 degree celsius", TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     @Override
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity  implements  TextToSpeech.On
             Log.e("TTS", "Initilization Failed!");
             Toast.makeText(MainActivity.this, "Initilization Failed!", Toast.LENGTH_SHORT).show();
         }
+
 
     }
 }
